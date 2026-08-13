@@ -1,0 +1,22 @@
+.showcase-swiper {
+	--swiper-theme-color: #d4a94e;
+}
+
+.showcase-swiper .swiper-pagination-bullet {
+	background-color: #fbf7ef;
+	opacity: 0.6;
+	width: 8px;
+	height: 8px;
+}
+
+.showcase-swiper .swiper-pagination-bullet-active {
+	opacity: 1;
+	background-color: #d4a94e;
+	width: 22px;
+	border-radius: 9999px;
+}
+
+.showcase-nav-btn:focus-visible {
+	outline: 2px solid #fbf7ef;
+	outline-offset: 2px;
+}

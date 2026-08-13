@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+@theme {
+
+	--font-vazir: "Vazirmatn", sans-serif;
+
+	--color-forest: #0e6b4f;
+	--color-forest-light: #159a73;
+	--color-forest-dark: #0a4636;
+
+	--color-camel: #d4a94e;
+	--color-camel-light: #ebc978;
+	--color-camel-dark: #b08a34;
+
+	--color-cream: #fbf7ef;
+	--color-cream-dark: #f2e8d6;
+
+	--color-rust: #e1603f;
+	--color-rust-light: #f08867;
+
+	--color-ink: #221e1b;
+}
+
+/*
+ * فونت پیش‌فرض کل برنامه.
+ * این قانون روی html/body تنظیم شده (و نه فقط با کلاس روی لایه‌های اصلی)
+ * چون Modal ها (مثل ConfirmDialog) با createPortal مستقیم داخل document.body
+ * رندر می‌شوند و بیرون از درخت DOM لایه‌هایی هستند که کلاس font-vazir
+ * روی آن‌ها ست شده؛ بدون این قانون سراسری، متن داخل مودال‌ها فونت
+ * پیش‌فرض مرورگر را می‌گرفت، نه وزیرمتن.
+ */
+html,
+body {
+	font-family: var(--font-vazir);
+}
+
+@keyframes product-card-in {
+	0% {
+		opacity: 0;
+		transform: translateY(14px) scale(0.96);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.product-card-enter {
+	animation: product-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes product-card-highlight {
+	0% {
+		box-shadow: 0 0 0 0 rgba(14, 107, 79, 0.4);
+	}
+	100% {
+		box-shadow: 0 0 0 10px rgba(14, 107, 79, 0);
+	}
+}
+
+.product-card-highlight {
+	animation: product-card-highlight 1.4s ease-out;
+}
+
+@keyframes product-row-in {
+	0% {
+		opacity: 0;
+		background-color: rgba(14, 107, 79, 0.12);
+	}
+	100% {
+		opacity: 1;
+		background-color: transparent;
+	}
+}
+
+.product-row-enter {
+	animation: product-row-in 1.4s ease-out;
+}
+
+@keyframes route-fade-in {
+	0% {
+		opacity: 0;
+		transform: translateY(22px) scale(0.985);
+		filter: blur(4px);
+	}
+	55% {
+		filter: blur(0);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: blur(0);
+	}
+}
+
+.route-fade-in {
+	animation: route-fade-in 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes route-fade-out {
+	0% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-10px) scale(0.99);
+	}
+}
+
+.route-fade-out {
+	animation: route-fade-out 0.16s cubic-bezier(0.4, 0, 1, 1) forwards;
+	pointer-events: none;
+}
+
+@keyframes route-cms-in {
+	0% {
+		opacity: 0;
+		transform: translateX(28px) scale(0.97);
+	}
+	60% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0) scale(1);
+	}
+}
+
+.route-cms-in {
+	animation: route-cms-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+	transform-origin: top center;
+}
+
+@keyframes route-cms-out {
+	0% {
+		opacity: 1;
+		transform: translateX(0) scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(-18px) scale(0.98);
+	}
+}
+
+.route-cms-out {
+	animation: route-cms-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+	pointer-events: none;
+	transform-origin: top center;
+}
+
+@keyframes cart-backdrop-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes cart-panel-in {
+	0% {
+		opacity: 0;
+		transform: translateX(-28px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.cart-backdrop-enter {
+	animation: cart-backdrop-in 0.25s ease-out;
+}
+
+.cart-panel-enter {
+	animation: cart-panel-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes comment-in {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px) scale(0.98);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.comment-in {
+	animation: comment-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes comment-highlight {
+	0% {
+		background-color: rgba(212, 169, 78, 0.18);
+	}
+	100% {
+		background-color: transparent;
+	}
+}
+
+.comment-highlight {
+	animation: comment-highlight 1.5s ease-out;
+}
+
+@keyframes auth-form-in {
+	0% {
+		opacity: 0;
+		transform: translateY(10px) scale(0.98);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.auth-form-in {
+	animation: auth-form-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Global visual polish */
+html {
+  scroll-behavior: smooth;
+  background: var(--color-cream);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(14, 107, 79, 0.35);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(14, 107, 79, 0.18);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
