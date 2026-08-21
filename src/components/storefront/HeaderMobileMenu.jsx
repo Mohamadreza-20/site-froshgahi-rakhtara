@@ -1,0 +1,9 @@
+import { LayoutDashboard, LogOut, Menu, User, X } from "lucide-react";
+import { Link } from "react-router-dom";
+const NAV_LINKS = [{ href: "", label: "خانه" }, { href: "products", label: "محصولات" }, { href: "about-us", label: "درباره ما" }, { href: "contact-us", label: "تماس با ما" }];
+export default function HeaderMobileMenu({ open, setOpen, isAuthenticated, canOpenPanel, panelHref, onLogout }) {
+  return <>
+    <button aria-label={open ? "بستن منو" : "باز کردن منو"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen((prev) => !prev)} type="button" className="md:hidden p-2 rounded-full hover:bg-forest/10 hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30">{open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}</button>
+    {open && <nav id="mobile-navigation" aria-label="ناوبری اصلی موبایل" className="md:hidden border-t border-camel/20"><div className="flex flex-col px-6 py-4 gap-4 text-sm font-medium text-ink/80">{NAV_LINKS.map((link) => <Link key={link.href || "home"} to={`/${link.href}`} onClick={() => setOpen(false)}>{link.label}</Link>)}{isAuthenticated ? <Link to={panelHref} className="flex items-center gap-2 font-bold text-forest" onClick={() => setOpen(false)}><LayoutDashboard size={16} aria-hidden="true" />{canOpenPanel ? "پنل مدیریت" : "پنل کاربری"}</Link> : <Link to="/auth" state={{ tab: "login" }} className="flex items-center gap-2 font-bold text-forest" onClick={() => setOpen(false)}><User size={16} aria-hidden="true" />ثبت‌نام | ورود</Link>}{isAuthenticated && <button type="button" onClick={onLogout} className="flex items-center gap-2 font-bold text-right text-rust focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rust/30"><LogOut size={16} aria-hidden="true" />خروج</button>}</div></nav>}
+  </>;
+}

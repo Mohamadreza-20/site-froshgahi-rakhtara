@@ -1,98 +1,45 @@
-import { useEffect, useState } from "react";
-import { PageHeader, StatCard } from "../components/cms/ui";
-import RegistrationsChart from "../components/cms/features/dashboard/RegistrationsChart";
-import RecentProducts from "../components/cms/features/dashboard/RecentProducts";
-import RecentUsers from "../components/cms/features/dashboard/RecentUsers";
-import ShowcaseImagesManager from "../components/cms/features/dashboard/ShowcaseImagesManager";
-import ContactInfoSection from "../components/cms/features/dashboard/ContactInfoSection";
-import ContactMessagesSection from "../components/cms/features/dashboard/ContactMessagesSection";
+import { useMemo } from "react";
+import { PageHeader } from "../components/cms/ui";
+import DashboardStats from "../components/cms/features/dashboard/DashboardStats";
+import DashboardSections from "../components/cms/features/dashboard/DashboardSections";
+import { QueryErrorState, QueryLoadingState } from "../components/shared/states/QueryStates";
 import { statCardIcons } from "../lib/data/mockData";
-import { getProduct } from "../services/products";
-import { getUsers } from "../services/users";
-import { getAllComments } from "../services/comments";
-import { PANEL_ROLES } from "../lib/roles";
+import { useUsersQuery } from "../lib/hooks/cms/useUsersQueries";
+import { useCommentsQuery } from "../lib/hooks/cms/useCommentsQueries";
+import { useProducts } from "../lib/hooks/useProducts";
+import { usePageMeta } from "../lib/hooks/usePageMeta";
 
 export default function Dashboard() {
-	const [counts, setCounts] = useState({
-		managers: 0,
-		comments: 0,
-		users: 0,
-		products: 0,
-	});
+  usePageMeta({ title: "داشبورد مدیریت | Rakhtara", description: "داشبورد مدیریت فروشگاه Rakhtara و نمای کلی کاربران، محصولات و نظرات.", path: "/dashboard/home", robots: "noindex, nofollow" });
+  const usersQuery = useUsersQuery();
+  const commentsQuery = useCommentsQuery();
+  const productsQuery = useProducts({ limit: 100 });
+  const users = usersQuery.data ?? [];
+  const comments = commentsQuery.data ?? [];
+  const products = productsQuery.products;
+  const loading = usersQuery.isLoading || commentsQuery.isLoading || productsQuery.loading;
+  const error = usersQuery.error || commentsQuery.error || productsQuery.error;
+  const counts = useMemo(() => ({
+    users: users.length,
+    products: productsQuery.total || products.length,
+    comments: comments.length,
+    managers: users.filter((user) => user.role === "مدیر فروشگاه").length,
+  }), [comments.length, products.length, productsQuery.total, users]);
 
-	useEffect(() => {
-		async function getData() {
-			const [products, users, comments] = await Promise.all([
-				getProduct(),
-				getUsers(),
-				getAllComments(),
-			]);
+  const retry = () => {
+    void usersQuery.refetch();
+    void commentsQuery.refetch();
+    void productsQuery.refetch();
+  };
 
-			setCounts({
-				managers: users.filter((currentUser) => PANEL_ROLES.includes(currentUser.role)).length,
-				comments: comments.length,
-				users: users.length,
-				products: products.length,
-			});
-		}
-		getData();
-	}, []);
+  if (loading) return <QueryLoadingState message="در حال بارگذاری داشبورد..." />;
+  if (error) return <QueryErrorState message="دریافت اطلاعات داشبورد ناموفق بود" onRetry={retry} />;
 
-	const statCards = [
-		{
-			label: "تعداد مدیران",
-			value: counts.managers.toLocaleString("fa-IR"),
-			suffix: "عدد",
-			icon: statCardIcons.managers,
-		},
-		{
-			label: "تعداد تیکت‌ها",
-			value: counts.comments.toLocaleString("fa-IR"),
-			suffix: "عدد",
-			icon: statCardIcons.tickets,
-		},
-		{
-			label: "تعداد کاربران",
-			value: counts.users.toLocaleString("fa-IR"),
-			suffix: "عدد",
-			icon: statCardIcons.users,
-		},
-		{
-			label: "تعداد محصولات",
-			value: counts.products.toLocaleString("fa-IR"),
-			suffix: "عدد",
-			icon: statCardIcons.products,
-		},
-	];
-
-	return (
-		<div className="space-y-6 ">
-			<PageHeader title="داشبورد" />
-
-			<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-				{statCards.map((statCard) => (
-					<StatCard
-						key={statCard.label}
-						label={statCard.label}
-						value={statCard.value}
-						suffix={statCard.suffix}
-						icon={statCard.icon}
-					/>
-				))}
-			</div>
-
-			<RegistrationsChart />
-
-			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-				<RecentProducts />
-				<RecentUsers />
-			</div>
-
-			<ShowcaseImagesManager />
-
-			<ContactInfoSection />
-
-			<ContactMessagesSection />
-		</div>
-	);
+  return (
+    <div className="space-y-6">
+      <PageHeader title="داشبورد" />
+      <DashboardStats counts={counts} icons={statCardIcons} />
+      <DashboardSections />
+    </div>
+  );
 }

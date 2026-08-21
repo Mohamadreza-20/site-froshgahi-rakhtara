@@ -1,164 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
-import { ChevronLeft, SlidersHorizontal, PackageSearch } from "lucide-react";
-import { CATEGORIES } from "../lib/data/products";
-import { SORT_OPTIONS, sortProducts } from "../lib/productSort";
-import { useProducts } from "../lib/hooks/useProducts";
-import ProductCard from "../components/storefront/ProductCard";
-import Pagination from "../components/storefront/Pagination";
-import { ProductGridSkeleton } from "../components/storefront/ProductCardSkeleton";
-
-const PAGE_SIZE = 15;
+import { Link } from "react-router-dom";
+import ProductListingResults from "../components/storefront/ProductListingResults";
+import CategoryHero from "../components/storefront/category/CategoryHero";
+import { useCategoryPage } from "../lib/hooks/pages/useCategoryPage";
 
 export default function CategoryPage() {
-	const { id } = useParams();
-	const { addToCart } = useOutletContext();
+  const { id, category, addToCart, currentPage, sort, query, safePage, changeSort, changePage } = useCategoryPage();
 
-	const { products, loading } = useProducts();
-	const [currentPage, setCurrentPage] = useState(1);
-	const [sort, setSort] = useState("default");
+  if (!query.loading && !category) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-20 text-center">
+        <p className="text-lg text-ink/60 mb-6">دسته‌بندی مورد نظر یافت نشد</p>
+        <Link to="/" className="text-forest font-bold hover:underline">بازگشت به خانه</Link>
+      </div>
+    );
+  }
 
-	const category = CATEGORIES.find((currentCategory) => currentCategory.id === id) || null;
-
-	useEffect(() => {
-		setCurrentPage(1);
-		setSort("default");
-	}, [id]);
-
-	const filtered = useMemo(
-		() => (category ? products.filter((product) => product.cat === category.name) : []),
-		[products, category],
-	);
-
-	const sorted = useMemo(() => sortProducts(filtered, sort), [filtered, sort]);
-
-	const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
-
-	const paginated = useMemo(() => {
-		const start = (currentPage - 1) * PAGE_SIZE;
-		return sorted.slice(start, start + PAGE_SIZE);
-	}, [sorted, currentPage]);
-
-	const handlePageChange = (page) => {
-		setCurrentPage(page);
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	if (!loading && !category) {
-		return (
-			<div className="max-w-7xl mx-auto px-6 py-20 text-center">
-				<p className="text-lg text-ink/60 mb-6">دسته‌بندی مورد نظر یافت نشد</p>
-				<Link to="/" className="text-forest font-bold hover:underline">
-					بازگشت به خانه
-				</Link>
-			</div>
-		);
-	}
-
-	return (
-		<div>
-			<section
-				className={`relative overflow-hidden ${category?.bg || "bg-forest"}`}
-			>
-				<div className="max-w-7xl mx-auto px-6 py-14">
-					<div className="flex items-center gap-2 text-sm mb-6 text-cream/70">
-						<Link to="/" className="hover:underline hover:text-cream">
-							خانه
-						</Link>
-						<ChevronLeft size={14} />
-						<Link to="/#categories" className="hover:underline hover:text-cream">
-							دسته‌بندی‌ها
-						</Link>
-						<ChevronLeft size={14} />
-						<span className="text-cream">{category?.name}</span>
-					</div>
-
-					<div className="flex items-end justify-between flex-wrap gap-4">
-						<div>
-							<h1 className="text-3xl md:text-4xl font-extrabold text-cream mb-3">
-								<span className="me-2">{category?.emoji}</span>
-								{category?.name}
-							</h1>
-							<p className="text-cream/70">
-								{loading
-									? "در حال بارگذاری..."
-									: `${sorted.length.toLocaleString("fa-IR")} محصول در این دسته‌بندی`}
-							</p>
-						</div>
-
-						<div className="flex flex-wrap gap-2">
-							{CATEGORIES.map((currentCategory) => (
-								<Link
-									key={currentCategory.id}
-									to={`/category/${currentCategory.id}`}
-									className={`text-sm font-semibold px-4 py-2 rounded-full border transition-colors ${
-										currentCategory.id === id
-											? "bg-cream text-forest border-cream"
-											: "border-cream/30 text-cream hover:bg-cream/10"
-									}`}
-								>
-									{currentCategory.emoji} {currentCategory.name}
-								</Link>
-							))}
-						</div>
-					</div>
-				</div>
-				<div className="absolute inset-0 -z-10 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,white,transparent_35%)]" />
-			</section>
-
-			<div className="max-w-7xl mx-auto px-6 py-10">
-				{!loading && sorted.length > 0 && (
-					<div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-						<p className="text-sm text-ink/50">
-							نمایش {paginated.length.toLocaleString("fa-IR")} از{" "}
-							{sorted.length.toLocaleString("fa-IR")} محصول
-						</p>
-						<label className="flex items-center gap-2 text-sm font-semibold text-ink/70 bg-white border border-ink/10 rounded-full px-4 py-2">
-							<SlidersHorizontal size={16} className="text-forest" />
-							مرتب‌سازی:
-							<select
-								value={sort}
-								onChange={(event) => setSort(event.target.value)}
-								className="cursor-pointer bg-transparent outline-none font-bold text-forest"
-							>
-								{SORT_OPTIONS.map((option) => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</select>
-						</label>
-					</div>
-				)}
-
-				{loading ? (
-					<ProductGridSkeleton count={PAGE_SIZE} />
-				) : sorted.length === 0 ? (
-					<div className="text-center py-20">
-						<PackageSearch className="mx-auto mb-4 text-ink/20" size={48} />
-						<p className="text-lg text-ink/60 mb-6">
-							محصولی در این دسته‌بندی موجود نیست
-						</p>
-						<Link to="/" className="text-forest font-bold hover:underline">
-							بازگشت به خانه
-						</Link>
-					</div>
-				) : (
-					<>
-						<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-							{paginated.map((product) => (
-								<ProductCard key={product.id} product={product} onAdd={addToCart} />
-							))}
-						</div>
-
-						<Pagination
-							currentPage={currentPage}
-							totalPages={totalPages}
-							onPageChange={handlePageChange}
-						/>
-					</>
-				)}
-			</div>
-		</div>
-	);
+  return (
+    <div>
+      <CategoryHero category={category} id={id} total={query.total} loading={query.loading} />
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <ProductListingResults
+          products={query.products}
+          loading={query.loading}
+          error={query.error}
+          refetch={query.refetch}
+          total={query.total}
+          fetching={query.fetching}
+          sort={sort}
+          onSortChange={changeSort}
+          currentPage={safePage}
+          totalPages={query.totalPages}
+          onPageChange={changePage}
+          addToCart={addToCart}
+        />
+      </div>
+    </div>
+  );
 }

@@ -21,14 +21,7 @@
 	--color-ink: #221e1b;
 }
 
-/*
- * فونت پیش‌فرض کل برنامه.
- * این قانون روی html/body تنظیم شده (و نه فقط با کلاس روی لایه‌های اصلی)
- * چون Modal ها (مثل ConfirmDialog) با createPortal مستقیم داخل document.body
- * رندر می‌شوند و بیرون از درخت DOM لایه‌هایی هستند که کلاس font-vazir
- * روی آن‌ها ست شده؛ بدون این قانون سراسری، متن داخل مودال‌ها فونت
- * پیش‌فرض مرورگر را می‌گرفت، نه وزیرمتن.
- */
+
 html,
 body {
 	font-family: var(--font-vazir);
@@ -77,75 +70,34 @@ body {
 	animation: product-row-in 1.4s ease-out;
 }
 
-@keyframes route-fade-in {
+@keyframes lazy-mount-in {
 	0% {
 		opacity: 0;
-		transform: translateY(22px) scale(0.985);
-		filter: blur(4px);
-	}
-	55% {
-		filter: blur(0);
+		transform: translateY(24px);
 	}
 	100% {
 		opacity: 1;
-		transform: translateY(0) scale(1);
-		filter: blur(0);
+		transform: translateY(0);
 	}
 }
 
-.route-fade-in {
-	animation: route-fade-in 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes route-fade-out {
-	0% {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
-	100% {
-		opacity: 0;
-		transform: translateY(-10px) scale(0.99);
-	}
-}
-
-.route-fade-out {
-	animation: route-fade-out 0.16s cubic-bezier(0.4, 0, 1, 1) forwards;
-	pointer-events: none;
+.lazy-mount-enter {
+	animation: lazy-mount-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes route-cms-in {
 	0% {
 		opacity: 0;
-		transform: translateX(28px) scale(0.97);
-	}
-	60% {
-		opacity: 1;
+		transform: translateX(20px);
 	}
 	100% {
 		opacity: 1;
-		transform: translateX(0) scale(1);
+		transform: translateX(0);
 	}
 }
 
 .route-cms-in {
-	animation: route-cms-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-	transform-origin: top center;
-}
-
-@keyframes route-cms-out {
-	0% {
-		opacity: 1;
-		transform: translateX(0) scale(1);
-	}
-	100% {
-		opacity: 0;
-		transform: translateX(-18px) scale(0.98);
-	}
-}
-
-.route-cms-out {
-	animation: route-cms-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
-	pointer-events: none;
+	animation: route-cms-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 	transform-origin: top center;
 }
 
@@ -220,7 +172,7 @@ body {
 	animation: auth-form-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Global visual polish */
+
 html {
   scroll-behavior: smooth;
   background: var(--color-cream);
@@ -278,3 +230,5 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+.tabular-nums { font-variant-numeric: tabular-nums; }

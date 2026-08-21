@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { usePageMeta } from "../lib/hooks/usePageMeta";
 
 export default function NotFoundPage() {
+	usePageMeta({ title: "صفحه پیدا نشد | Rakhtara", description: "صفحه مورد نظر در Rakhtara پیدا نشد.", robots: "noindex, nofollow" });
 	return (
 		<div className="max-w-7xl mx-auto px-6 py-24 text-center">
 			<p className="text-6xl font-extrabold text-forest mb-4">۴۰۴</p>

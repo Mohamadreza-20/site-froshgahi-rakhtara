@@ -30,7 +30,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 	const pages = getPageList(currentPage, totalPages);
 
 	return (
-		<div className="flex items-center justify-center gap-1.5 pt-2">
+		<nav aria-label="صفحه‌بندی" className="flex items-center justify-center gap-1.5 pt-2">
 			<button
 				type="button"
 				disabled={currentPage === 1}
@@ -54,6 +54,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 						key={page}
 						type="button"
 						onClick={() => onPageChange(page)}
+						aria-current={page === currentPage ? "page" : undefined}
 						className={`cursor-pointer w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition tabular-nums ${
 							page === currentPage
 								? "bg-[#6C63FF] text-white shadow-sm shadow-[#6C63FF]/30"
@@ -74,6 +75,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 			>
 				<ChevronLeft size={16} />
 			</button>
-		</div>
+		</nav>
 	);
 }

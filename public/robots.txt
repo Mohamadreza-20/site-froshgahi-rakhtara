@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /account
+Disallow: /dashboard
+Disallow: /forbidden

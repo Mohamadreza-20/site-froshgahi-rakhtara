@@ -1,35 +1,27 @@
 import axios from "axios";
-import { toast } from "sonner";
+import { env } from "../lib/config";
+import { getErrorMessage } from "../utils/errors";
 
 const api = axios.create({
-	baseURL: "http://localhost:3000",
-	headers: {
-		"Content-Type": "application/json",
-	},
+	baseURL: env.VITE_API_URL,
+	headers: { "Content-Type": "application/json" },
 	timeout: 5000,
 });
 
 api.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error.code === "ECONNABORTED") {
-			toast("درخواست بیش از حد طول کشید");
-		}
-
-		switch (error.response?.status) {
-			case 401: {
-				toast("برای ادامه لازم است وارد حساب کاربری خود شوید");
-				break;
-			}
-			case 403: {
-				toast("دسترسی غیر مجاز");
-				break;
-			}
-			case 500: {
-				toast("خطایی در سرور رخ داده است");
-				break;
-			}
-		}
+		const status = error.response?.status;
+		error.userMessage =
+			error.code === "ECONNABORTED"
+				? "درخواست بیش از حد طول کشید"
+				: status === 401
+					? "برای ادامه لازم است وارد حساب کاربری خود شوید"
+					: status === 403
+						? "دسترسی غیرمجاز"
+						: status >= 500
+							? "خطایی در سرور رخ داده است"
+							: getErrorMessage(error, "ارتباط با سرور برقرار نشد");
 		return Promise.reject(error);
 	},
 );

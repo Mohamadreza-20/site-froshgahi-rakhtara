@@ -8,13 +8,8 @@ export const getUsers = async () => {
 };
 
 export const createUser = async (userData) => {
-	try {
-		const { data } = await api.post(RESOURCE, userData);
-		return data;
-	} catch (error) {
-		console.error("خطا در ارسال داده:", error.response?.data || error.message);
-		throw error;
-	}
+	const { data } = await api.post(RESOURCE, userData);
+	return data;
 };
 
 export const updateUser = async (id, user) => {

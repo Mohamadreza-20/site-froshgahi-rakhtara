@@ -1,0 +1,2 @@
+import { StatCard } from "../../ui";
+export default function CommentsStats({ total, avgRating, fiveStarCount, lowRatingCount }) { return <div className="grid grid-cols-2 sm:grid-cols-4 gap-4"><StatCard label="مجموع نظرات" value={total} /><StatCard label="میانگین امتیاز" value={avgRating.toLocaleString("fa-IR", { maximumFractionDigits: 1 })} valueClassName="text-[#16A34A]" /><StatCard label="امتیاز ۵ ستاره" value={fiveStarCount} valueClassName="text-[#B45309]" /><StatCard label="امتیاز پایین (≤۲)" value={lowRatingCount} valueClassName="text-[#DC2626]" /></div>; }

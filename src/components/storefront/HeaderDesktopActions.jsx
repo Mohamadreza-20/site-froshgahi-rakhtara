@@ -1,0 +1,7 @@
+import { LayoutDashboard, LogOut, ShoppingBag, User } from "lucide-react";
+import { Link } from "react-router-dom";
+export default function HeaderDesktopActions({isAuthenticated,canOpenPanel,panelHref,onLogout,onCartClick,cartCount,bump}){return <div className="flex items-center gap-2">
+ {isAuthenticated?<Link to={panelHref} className="hidden sm:flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full border border-forest/20 text-forest hover:bg-forest hover:text-cream transition-colors"><LayoutDashboard size={16}/>{canOpenPanel?"پنل مدیریت":"پنل کاربری"}</Link>:<Link to="/auth" state={{tab:"login"}} className="hidden sm:flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full border border-forest/20 text-forest hover:bg-forest hover:text-cream transition-colors"><User size={16}/>ثبت‌نام | ورود</Link>}
+ {isAuthenticated&&<button aria-label="خروج" onClick={onLogout} type="button" className="p-2 rounded-full hover:bg-forest/10 hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"><LogOut size={20}/></button>}
+ <button aria-label="سبد خرید" onClick={onCartClick} type="button" className="relative p-2 rounded-full hover:bg-forest/10 hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"><ShoppingBag size={20}/><span className={`absolute -top-1 -left-1 w-4 h-4 rounded-full bg-rust text-white text-[10px] flex items-center justify-center ${bump?"cart-bump":""}`}>{cartCount}</span></button>
+ </div>}

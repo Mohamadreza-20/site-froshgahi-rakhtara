@@ -1,3 +1,4 @@
+import OptimizedImage from "../shared/OptimizedImage";
 import { memo, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageOff, Check, Star } from "lucide-react";
@@ -28,7 +29,7 @@ function ProductCard({ product, onAdd, rating }) {
 			<Link to={`/product/${product.id}`} className="block w-full text-right">
 				<div className="relative aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-cream-dark to-camel-light/40">
 					{product.image ? (
-						<img
+						<OptimizedImage
 							src={product.image}
 							alt={product.name}
 							loading="lazy"

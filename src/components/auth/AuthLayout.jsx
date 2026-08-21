@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
-import { Toaster } from "sonner";
 
 export default function AuthLayout({ tab, setTab, children }) {
 	return (
@@ -8,15 +7,6 @@ export default function AuthLayout({ tab, setTab, children }) {
 			dir="rtl"
 			className="relative h-screen bg-cream font-vazir text-ink flex items-center justify-center px-4 py-6 overflow-hidden"
 		>
-			<Toaster
-				position="top-center"
-				dir="rtl"
-				richColors
-				closeButton
-				toastOptions={{
-					style: { fontFamily: "Vazirmatn, sans-serif", textAlign: "right" },
-				}}
-			/>
 			<svg
 				className="absolute inset-0 w-full h-full opacity-[0.07] pointer-events-none"
 				xmlns="http://www.w3.org/2000/svg"

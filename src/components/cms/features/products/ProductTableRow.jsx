@@ -1,3 +1,4 @@
+import OptimizedImage from "../../../shared/OptimizedImage";
 import { memo } from "react";
 import { Pencil, Trash2, ImageOff } from "lucide-react";
 import { CategoryBadge, StockPill } from "../../ui";
@@ -15,7 +16,7 @@ function ProductTableRow({ product, onEdit, onDelete, isNew }) {
 				<div className="flex items-center gap-3">
 					<div className="w-9 h-9 rounded-lg overflow-hidden bg-[#F5F6FA] flex items-center justify-center shrink-0">
 						{product.image ? (
-							<img
+							<OptimizedImage
 								src={product.image}
 								alt={product.name}
 								className="w-full h-full object-cover"

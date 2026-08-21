@@ -1,3 +1,4 @@
+import OptimizedImage from "../../../shared/OptimizedImage";
 import React from "react";
 import { Home, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ function Topbar({ onMenuClick = () => {} }) {
 					<Menu size={18} />
 				</button>
 
-				<img
+				<OptimizedImage
 					src={getAvatarUrl(user?.seed || user?.name || user?.email || "مدیر")}
 					alt=""
 					className="w-11 h-11 rounded-full bg-[#EEF0FF] object-cover shrink-0"

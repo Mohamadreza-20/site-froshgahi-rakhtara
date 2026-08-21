@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { usePageMeta } from "../lib/hooks/usePageMeta";
 import TrustBadges from "../components/storefront/TrustBadges";
 import Categories from "../components/storefront/Categories";
 import Hero from "../components/storefront/Hero";
@@ -12,6 +13,18 @@ import FaqSection from "../components/storefront/FaqSection";
 import Newsletter from "../components/storefront/Newsletter";
 
 export default function HomePage() {
+	usePageMeta({
+		title: "Rakhtara | فروشگاه اینترنتی پوشاک",
+		description: "خرید آنلاین پوشاک، کیف، کفش و اکسسوری از Rakhtara با تجربه خرید فارسی و طراحی واکنش‌گرا.",
+		path: "/",
+		jsonLd: {
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			name: "Rakhtara",
+			description: "فروشگاه اینترنتی پوشاک Rakhtara",
+			url: window.location.origin,
+		},
+	});
 	const { addToCart } = useOutletContext();
 	const [openFaq, setOpenFaq] = useState(0);
 

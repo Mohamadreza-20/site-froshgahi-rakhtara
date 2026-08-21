@@ -1,42 +1,45 @@
 {
-	"name": "Rakhtara | فروشگاه اینترنتی پوشاک",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"lint": "eslint .",
-		"preview": "vite preview",
-		"server": "json-server --watch server-data/db.json --port 3000"
-	},
-	"dependencies": {
-		"@tailwindcss/vite": "^4.3.2",
-		"axios": "^1.18.1",
-		"json-server": "^1.0.0-beta.15",
-		"lucide-react": "^1.26.0",
-		"react": "^19.2.7",
-		"react-dom": "^19.2.7",
-		"react-icons": "^5.7.0",
-		"react-router-dom": "^7.18.1",
-		"recharts": "^3.10.0",
-		"sonner": "^2.0.7",
-		"swiper": "^14.0.6",
-		"tailwindcss": "^4.3.2",
-		"zod": "^4.4.3"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.29.7",
-		"@eslint/js": "^10.0.1",
-		"@rolldown/plugin-babel": "^0.2.3",
-		"@types/react": "^19.2.17",
-		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^6.0.3",
-		"babel-plugin-react-compiler": "^1.0.0",
-		"eslint": "^10.6.0",
-		"eslint-plugin-react-hooks": "^7.1.1",
-		"eslint-plugin-react-refresh": "^0.5.3",
-		"globals": "^17.7.0",
-		"vite": "^8.1.1"
-	}
+  "name": "Rakhtara | فروشگاه اینترنتی پوشاک",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/generate-seo.mjs",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "server": "json-server --watch server-data/db.json --port 3000",
+    "prebuild": "node scripts/sync-seo-manifest.mjs",
+    "build:production": "node scripts/build-production.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "axios": "^1.18.1",
+    "json-server": "^1.0.0-beta.15",
+    "lucide-react": "^1.26.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
+    "recharts": "^3.10.0",
+    "sonner": "^2.0.7",
+    "swiper": "^14.0.6",
+    "tailwindcss": "^4.3.2",
+    "zod": "^4.4.3",
+    "@tanstack/react-query": "^5.89.0",
+    "react-error-boundary": "^6.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^10.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "vite": "^8.1.1"
+  }
 }

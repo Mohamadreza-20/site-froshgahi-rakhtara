@@ -1,3 +1,4 @@
+import OptimizedImage from "../../../shared/OptimizedImage";
 import { memo } from "react";
 import { Pencil, Trash2, ImageOff } from "lucide-react";
 import { CategoryBadge, StockPill } from "../../ui";
@@ -13,7 +14,7 @@ function ProductCard({ product, onEdit, onDelete, isNew }) {
 		>
 			<div className="relative aspect-[4/3] bg-[#F5F6FA]">
 				{product.image ? (
-					<img
+					<OptimizedImage
 						src={product.image}
 						alt={product.name}
 						className="w-full h-full object-cover"

@@ -1,26 +1,50 @@
-import { createBrowserRouter, redirect, Navigate, Outlet, ScrollRestoration } from "react-router-dom";
+import { createBrowserRouter, redirect, Outlet, ScrollRestoration } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Toaster } from "sonner";
 import AppLayout from "../components/layouts/AppLayout";
-import HomePage from "../pages/HomePage";
-import AllProductsPage from "../pages/AllProductsPage";
-import AboutUSPage from "../pages/AboutUSPage";
-import ContactUSPage from "../pages/ContactUSPage";
-import ProductDetailPage from "../pages/ProductDetailPage";
-import CategoryPage from "../pages/CategoryPage";
-import NotFound from "../pages/NotFound";
-import Forbidden from "../pages/Forbidden";
 import CMSLayout from "../components/layouts/CMSLayout";
-import Dashboard from "../pages/Dashboard";
-import Products from "../pages/Products";
-import Users from "../pages/Users";
-import CmsComments from "../pages/CmsComments";
-import AuthPage from "../pages/AuthPage";
-import AccountPage from "../pages/AccountPage";
+
+const HomePage = lazy(() => import("../pages/HomePage"));
+const AllProductsPage = lazy(() => import("../pages/AllProductsPage"));
+const AboutUsPage = lazy(() => import("../pages/AboutUsPage"));
+const ContactUsPage = lazy(() => import("../pages/ContactUsPage"));
+const ProductDetailPage = lazy(() => import("../pages/ProductDetailPage"));
+const CategoryPage = lazy(() => import("../pages/CategoryPage"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+const Forbidden = lazy(() => import("../pages/Forbidden"));
+const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Products = lazy(() => import("../pages/Products"));
+const Users = lazy(() => import("../pages/Users"));
+const CmsComments = lazy(() => import("../pages/CmsComments"));
+const AuthPage = lazy(() => import("../pages/AuthPage"));
+const AccountPage = lazy(() => import("../pages/AccountPage"));
+import RouteErrorPage from "../pages/RouteErrorPage";
+
+function RouteLoadingFallback() {
+	return (
+		<div className="min-h-[40vh] flex items-center justify-center px-6 py-12" role="status" aria-live="polite">
+			<div className="h-10 w-10 rounded-full border-4 border-forest/15 border-t-forest animate-spin" aria-hidden="true" />
+			<span className="sr-only">در حال بارگذاری صفحه</span>
+		</div>
+	);
+}
 
 function RootLayout() {
 	return (
 		<>
 			<ScrollRestoration />
-			<Outlet />
+			<Toaster
+				position="top-center"
+				dir="rtl"
+				richColors
+				closeButton
+				toastOptions={{
+					style: { fontFamily: "Vazirmatn, sans-serif", textAlign: "right" },
+				}}
+			/>
+			<Suspense fallback={<RouteLoadingFallback />}>
+				<Outlet />
+			</Suspense>
 		</>
 	);
 }
@@ -28,7 +52,7 @@ function RootLayout() {
 export const router = createBrowserRouter([
 	{
 		element: <RootLayout />,
-		errorElement: <Navigate to="/" replace />,
+		errorElement: <RouteErrorPage />,
 		children: [
 			{
 				path: "/",
@@ -36,8 +60,8 @@ export const router = createBrowserRouter([
 				children: [
 					{ index: true, element: <HomePage /> },
 					{ path: "products", element: <AllProductsPage /> },
-					{ path: "about-us", element: <AboutUSPage /> },
-					{ path: "contact-us", element: <ContactUSPage /> },
+					{ path: "about-us", element: <AboutUsPage /> },
+					{ path: "contact-us", element: <ContactUsPage /> },
 					{ path: "product/:id", element: <ProductDetailPage /> },
 					{ path: "category/:id", element: <CategoryPage /> },
 					{ path: "account", element: <AccountPage /> },

@@ -8,13 +8,8 @@ export const getShowcaseImages = async () => {
 };
 
 export const createShowcaseImage = async (image) => {
-	try {
-		const { data } = await api.post(RESOURCE, image);
-		return data;
-	} catch (error) {
-		console.error("خطا در افزودن عکس:", error.response?.data || error.message);
-		throw error;
-	}
+	const { data } = await api.post(RESOURCE, image);
+	return data;
 };
 
 export const updateShowcaseImage = async (id, image) => {

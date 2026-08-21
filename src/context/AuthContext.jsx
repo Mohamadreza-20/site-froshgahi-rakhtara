@@ -4,38 +4,53 @@ import {
 	useContext,
 	useEffect,
 	useMemo,
+	useRef,
 	useState,
 } from "react";
+import { STORAGE_KEYS } from "../lib/storageKeys";
 
 const AuthContext = createContext(null);
-const STORAGE_KEY = "nemonekar_auth_user";
+
+const STORAGE_KEY = STORAGE_KEYS.authUser;
+
+function readStoredUser() {
+	try {
+		const remembered = localStorage.getItem(STORAGE_KEY);
+		if (remembered) return { user: JSON.parse(remembered), remember: true };
+
+		const sessionUser = sessionStorage.getItem(STORAGE_KEY);
+		if (sessionUser) return { user: JSON.parse(sessionUser), remember: false };
+	} catch {
+	}
+
+	return { user: null, remember: false };
+}
 
 export function AuthProvider({ children }) {
-	const [user, setUser] = useState(() => {
-		try {
-			const raw = localStorage.getItem(STORAGE_KEY);
-			return raw ? JSON.parse(raw) : null;
-		} catch {
-			return null;
-		}
-	});
+	const initial = readStoredUser();
+	const [user, setUser] = useState(initial.user);
+	const rememberRef = useRef(initial.remember);
 
 	useEffect(() => {
 		try {
-			if (user) {
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-			} else {
-				localStorage.removeItem(STORAGE_KEY);
-			}
+			localStorage.removeItem(STORAGE_KEY);
+			sessionStorage.removeItem(STORAGE_KEY);
+
+			if (!user) return;
+
+			const storage = rememberRef.current ? localStorage : sessionStorage;
+			storage.setItem(STORAGE_KEY, JSON.stringify(user));
 		} catch {
 		}
 	}, [user]);
 
-	const signIn = useCallback((userData) => {
+	const signIn = useCallback((userData, remember = true) => {
+		rememberRef.current = Boolean(remember);
 		setUser(userData);
 	}, []);
 
 	const signOut = useCallback(() => {
+		rememberRef.current = false;
 		setUser(null);
 	}, []);
 
@@ -54,9 +69,7 @@ export function AuthProvider({ children }) {
 		[user, signIn, signOut, updateUser],
 	);
 
-	return (
-		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {

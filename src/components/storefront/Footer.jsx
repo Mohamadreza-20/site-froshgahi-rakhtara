@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Link } from "react-router-dom";
 import { NAV_LINKS } from "../../lib/data/products";
 
@@ -60,4 +59,4 @@ function Footer() {
 	);
 }
 
-export default memo(Footer);
+export default Footer;
