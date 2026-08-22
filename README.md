@@ -221,10 +221,11 @@ npm run dev
 ### حساب آزمایشی
 برای ورود به‌صورت آزمایشی می‌توانید از این حساب استفاده کنید:
 
-<<<<<<< HEAD
-- ایمیل: `mohammad@rakhtara.local`
-- رمز عبور: `12345678`
-=======
+- ایمیل: `mohammad.rezaei@gmail.com`
+- رمز عبور: `Rakhtara123!`
+
+### بررسی کیفیت و Build
+
 ```bash
 npm run lint
 npm run build
@@ -252,7 +253,6 @@ npm run build
 ## 👨‍💻 توسعه‌دهنده
 
 **Mohamadreza Abidi**
->>>>>>> 4afdf3e63be964ae7a1ae0da758c0c0dfac689bc
 
 ---
 

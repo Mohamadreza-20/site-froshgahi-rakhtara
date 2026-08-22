@@ -6,8 +6,8 @@ import CMSLayout from "../components/layouts/CMSLayout";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const AllProductsPage = lazy(() => import("../pages/AllProductsPage"));
-const AboutUsPage = lazy(() => import("../pages/AboutUsPage"));
-const ContactUsPage = lazy(() => import("../pages/ContactUsPage"));
+const AboutUsPage = lazy(() => import("../pages/AboutUSPage"));
+const ContactUsPage = lazy(() => import("../pages/ContactUSPage"));
 const ProductDetailPage = lazy(() => import("../pages/ProductDetailPage"));
 const CategoryPage = lazy(() => import("../pages/CategoryPage"));
 const NotFound = lazy(() => import("../pages/NotFound"));

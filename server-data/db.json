@@ -215,9 +215,9 @@
     {
       "id": "u1",
       "name": "محمد رضایی",
-      "email": "mohammad@rakhtara.local",
+      "email": "mohammad.rezaei@gmail.com",
       "phone": "09121234567",
-      "password": "12345678",
+      "password": "Rakhtara123!",
       "role": "مدیر فروشگاه",
       "status": "فعال",
       "joined": "۱۴۰۵/۰۵/۱۰",
@@ -227,9 +227,9 @@
     {
       "id": "u2",
       "name": "سارا احمدی",
-      "email": "sara@rakhtara.local",
+      "email": "sara.ahmadi@gmail.com",
       "phone": "09129876543",
-      "password": "12345678",
+      "password": "Rakhtara456@",
       "role": "پشتیبانی",
       "status": "فعال",
       "joined": "۱۴۰۵/۰۵/۱۲",
@@ -239,9 +239,9 @@
     {
       "id": "u3",
       "name": "علی کریمی",
-      "email": "ali@rakhtara.local",
+      "email": "ali.karimi@gmail.com",
       "phone": "09351234567",
-      "password": "12345678",
+      "password": "Rakhtara789#",
       "role": "مشتری",
       "status": "فعال",
       "joined": "۱۴۰۵/۰۵/۱۵",
@@ -251,9 +251,9 @@
     {
       "id": "u4",
       "name": "نگار مرادی",
-      "email": "negar@rakhtara.local",
+      "email": "negar.moradi@gmail.com",
       "phone": "09105554433",
-      "password": "12345678",
+      "password": "Rakhtara321$",
       "role": "مشتری",
       "status": "فعال",
       "joined": "۱۴۰۵/۰۵/۱۸",
@@ -263,9 +263,9 @@
     {
       "id": "u5",
       "name": "رضا اکبری",
-      "email": "reza@rakhtara.local",
+      "email": "reza.akbari@gmail.com",
       "phone": "09211223344",
-      "password": "12345678",
+      "password": "Rakhtara654%",
       "role": "مشتری",
       "status": "غیرفعال",
       "joined": "۱۴۰۵/۰۵/۲۱",
@@ -275,9 +275,9 @@
     {
       "id": "u6",
       "name": "الهام حسینی",
-      "email": "elham@rakhtara.local",
+      "email": "elham.hosseini@gmail.com",
       "phone": "09123334455",
-      "password": "12345678",
+      "password": "Rakhtara987&",
       "role": "پشتیبانی",
       "status": "فعال",
       "joined": "۱۴۰۵/۰۵/۲۴",
@@ -328,14 +328,14 @@
   ],
   "contactInfo": {
     "phone": "021-00000000",
-    "email": "info@rakhtara.local",
+    "email": "info.rakhtara@gmail.com",
     "address": "تهران"
   },
   "contactMessages": [
     {
       "id": "m1",
       "name": "علی کریمی",
-      "email": "ali@rakhtara.local",
+      "email": "ali.karimi@gmail.com",
       "subject": "پیگیری سفارش",
       "message": "سلام، می‌خواستم وضعیت ارسال سفارش خودم را بدانم.",
       "status": "در انتظار پاسخ",
@@ -348,7 +348,7 @@
     {
       "id": "m2",
       "name": "نگار مرادی",
-      "email": "negar@rakhtara.local",
+      "email": "negar.moradi@gmail.com",
       "subject": "راهنمای سایز",
       "message": "برای مانتوی مدل روزمره بین ۳۸ و ۴۰ مردد هستم.",
       "status": "پاسخ داده شده",

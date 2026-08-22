@@ -10,7 +10,7 @@ export default function UserFormFields({ form, onChange }) {
       </div>
       <div>
         <label htmlFor="user-email" className="block text-sm font-medium text-[#374151] mb-1.5">ایمیل</label>
-        <input id="user-email" required type="email" dir="ltr" value={form.email} onChange={onChange("email")} placeholder="sara.ahmadi@example.com" className="w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none focus:border-[#6C63FF] transition bg-white text-right" />
+        <input id="user-email" required type="email" dir="ltr" value={form.email} onChange={onChange("email")} placeholder="sara.ahmadi@gmail.com" className="w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none focus:border-[#6C63FF] transition bg-white text-right" />
       </div>
       <div>
         <label htmlFor="user-phone" className="block text-sm font-medium text-[#374151] mb-1.5">شماره موبایل</label>
