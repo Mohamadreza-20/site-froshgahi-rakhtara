@@ -1,4 +1,5 @@
 import api from "./api";
+import { getProduct } from "./products";
 
 const RESOURCE = "/cart";
 
@@ -34,8 +35,24 @@ export async function mergeCartItems(sourceOwnerId, targetOwnerId) {
 
 	for (const sourceItem of sourceItems) {
 		const targetItem = targetByKey.get(sourceItem.cartKey);
+		let stock = Number(sourceItem.stock);
+
+		try {
+			const product = await getProduct(sourceItem.productId);
+			stock = Number(product?.stock);
+		} catch {
+			stock = Number.isFinite(stock) ? stock : 0;
+		}
+
+		if (!Number.isFinite(stock) || stock <= 0) {
+			if (targetItem) await deleteCartItem(targetItem.id);
+			await deleteCartItem(sourceItem.id);
+			continue;
+		}
+
+		const mergedQty = Math.min((targetItem?.qty || 0) + sourceItem.qty, stock);
 		if (targetItem) {
-			await updateCartItem(targetItem.id, { qty: targetItem.qty + sourceItem.qty });
+			await updateCartItem(targetItem.id, { qty: mergedQty, stock });
 		} else {
 			await createCartItem({
 				ownerId: targetOwnerId,
@@ -45,7 +62,8 @@ export async function mergeCartItems(sourceOwnerId, targetOwnerId) {
 				image: sourceItem.image,
 				gradient: sourceItem.gradient,
 				size: sourceItem.size,
-				qty: sourceItem.qty,
+				qty: mergedQty,
+				stock,
 				cartKey: sourceItem.cartKey,
 			});
 		}

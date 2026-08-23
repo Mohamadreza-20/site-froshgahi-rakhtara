@@ -1,5 +1,5 @@
 import { Link, useLocation, useOutletContext, useParams } from "react-router-dom";
-import { CATEGORIES } from "../lib/data/products";
+import { useCategories } from "../lib/hooks/useCategories";
 import ProductDetailSkeleton from "../components/storefront/ProductDetailSkeleton";
 import ProductBreadcrumbs from "../components/storefront/product-detail/ProductBreadcrumbs";
 import ProductDetailContent from "../components/storefront/product-detail/ProductDetailContent";
@@ -10,8 +10,9 @@ import { getSiteUrl } from "../lib/seo";
 export default function ProductDetailPage() {
   const { id } = useParams();
   const location = useLocation();
-  const { addToCart } = useOutletContext();
-  const state = useProductDetailPage({ id, addToCart });
+  const { addToCart, cart } = useOutletContext();
+  const state = useProductDetailPage({ id, addToCart, cart });
+  const { categories } = useCategories();
 
   usePageMeta(state.product ? {
     title: `${state.product.name} | Rakhtara`,
@@ -37,7 +38,9 @@ export default function ProductDetailPage() {
     );
   }
 
-  const categoryId = CATEGORIES.find((category) => category.name === state.product.cat)?.id;
+  const categoryId = state.product.categoryId != null && state.product.categoryId !== ""
+    ? categories.find((category) => String(category.id) === String(state.product.categoryId))?.id
+    : categories.find((category) => category.name === state.product.cat)?.id;
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       <ProductBreadcrumbs productName={state.product.name} categoryId={categoryId} />

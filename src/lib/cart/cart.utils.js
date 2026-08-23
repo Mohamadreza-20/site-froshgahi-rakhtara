@@ -20,7 +20,8 @@ export function fromCartRow(row) {
 		image: row.image,
 		gradient: row.gradient,
 		size: row.size,
-		qty: row.qty,
+		qty: Math.max(0, Number(row.qty) || 0),
+		stock: Number.isFinite(Number(row.stock)) ? Math.max(0, Number(row.stock)) : undefined,
 		cartKey: row.cartKey,
 	};
 }
@@ -35,6 +36,7 @@ export function toCartPayload(product, qty, size, cartKey, ownerId) {
 		gradient: product.gradient,
 		size,
 		qty,
+		stock: Number(product.stock) || 0,
 		cartKey,
 	};
 }

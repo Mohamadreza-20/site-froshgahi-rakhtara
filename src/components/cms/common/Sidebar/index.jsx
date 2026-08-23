@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import ModeratorLinks from "./fragments/ModeratorLinks";
 import { useAuthContext } from "../../../../context/AuthContext";
 import ConfirmDialog from "../../ui/ConfirmDialog";
@@ -17,10 +17,10 @@ function Sidebar({ isOpen = false, onClose = () => {} }) {
 
 	const handleConfirmLogout = () => {
 		signOut();
+		toast.success("با موفقیت از حساب کاربری خارج شدید");
 		setLogoutConfirmOpen(false);
 		onClose();
 		navigate("/");
-		toast.success("با موفقیت از حساب کاربری خود خارج شدید");
 	};
 
 	return (

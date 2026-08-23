@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
-import { CATEGORIES } from "../../data/products";
+import { useCategories } from "../useCategories";
 import { useProducts } from "../useProducts";
 import { usePageMeta } from "../usePageMeta";
 
@@ -15,9 +15,10 @@ export function useCategoryPage() {
   const { id } = useParams();
   const location = useLocation();
   const { addToCart } = useOutletContext();
+  const { categories } = useCategories();
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState("default");
-  const category = useMemo(() => CATEGORIES.find((item) => item.id === id) || null, [id]);
+  const category = useMemo(() => categories.find((item) => String(item.id) === String(id)) || null, [categories, id]);
 
   usePageMeta({
     title: category ? `${category.name} | Rakhtara` : "دسته‌بندی | Rakhtara",
@@ -26,7 +27,7 @@ export function useCategoryPage() {
     robots: category ? "index, follow" : "noindex, nofollow",
   });
 
-  const query = useProducts({ page: currentPage, limit: PAGE_SIZE, category: category?.name || "all", ...(sortMap[sort] || {}), enabled: Boolean(category) });
+  const query = useProducts({ page: currentPage, limit: PAGE_SIZE, category: category?.name || "all", categoryId: category?.id || "all", ...(sortMap[sort] || {}), enabled: Boolean(category) });
   const safePage = Math.min(currentPage, query.totalPages);
   const changeSort = useCallback((value) => { setSort(value); setCurrentPage(1); }, []);
   const changePage = useCallback((page) => { setCurrentPage(page); window.scrollTo({ top: 0, behavior: "smooth" }); }, []);

@@ -52,7 +52,7 @@ function AppLayout() {
 					onCartClick={() => setCartOpen(true)}
 				/>
 
-				<MainOutlet outletContext={{ addToCart }} />
+				<MainOutlet outletContext={{ addToCart, cart }} />
 				<Footer />
 
 				{cartOpen && (

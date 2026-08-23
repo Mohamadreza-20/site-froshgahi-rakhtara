@@ -14,6 +14,7 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const Forbidden = lazy(() => import("../pages/Forbidden"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Products = lazy(() => import("../pages/Products"));
+const Categories = lazy(() => import("../pages/Categories"));
 const Users = lazy(() => import("../pages/Users"));
 const CmsComments = lazy(() => import("../pages/CmsComments"));
 const AuthPage = lazy(() => import("../pages/AuthPage"));
@@ -81,6 +82,7 @@ export const router = createBrowserRouter([
 					{ path: "home", element: <Dashboard /> },
 					{ path: "users", element: <Users /> },
 					{ path: "products", element: <Products /> },
+					{ path: "categories", element: <Categories /> },
 					{ path: "comments", element: <CmsComments /> },
 				],
 			},

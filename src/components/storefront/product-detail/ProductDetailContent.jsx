@@ -14,6 +14,7 @@ export default function ProductDetailContent({ state, categoryId, onAdd }) {
           size={state.size}
           justAdded={state.justAdded}
           outOfStock={state.outOfStock}
+          stock={state.stock}
           hasSizes={state.hasSizes}
           onQtyChange={state.setQty}
           onSizeChange={state.setSize}

@@ -1,42 +1,54 @@
 import { useMemo, useState } from "react";
 import { useUsersQuery } from "./cms/useUsersQueries";
 import { useUserPageActions } from "./useUserPageActions";
+import { useDebouncedValue } from "./useDebouncedValue";
 
 const PAGE_SIZE = 10;
+
+function normalizeText(value) {
+  return String(value ?? "").trim().toLocaleLowerCase("fa-IR");
+}
+
+function matchesUser(user, query) {
+  const term = normalizeText(query);
+  if (!term) return true;
+  return normalizeText([
+    user.name,
+    user.email,
+    user.phone,
+    user.role,
+    user.status,
+    user.joined,
+  ].join(" ")).includes(term);
+}
 
 export function useUsersPage() {
   const [query, setQueryState] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const actions = useUserPageActions();
-  const { data: users = [], isLoading, isFetching, error, refetch } = useUsersQuery();
+  const debouncedQuery = useDebouncedValue(query, 450);
+  const { data: rawUsers = [], isLoading, isFetching, error, refetch } = useUsersQuery();
+  const users = useMemo(
+    () => (Array.isArray(rawUsers) ? rawUsers : []).filter((user) => matchesUser(user, debouncedQuery)),
+    [rawUsers, debouncedQuery],
+  );
 
-  const filtered = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) return users;
-    return users.filter(
-      (user) =>
-        user.name?.toLowerCase().includes(normalized) ||
-        user.email?.toLowerCase().includes(normalized),
-    );
-  }, [users, query]);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(users.length / PAGE_SIZE));
   const safePage = Math.min(currentPage, totalPages);
   const paginated = useMemo(
-    () => filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
-    [filtered, safePage],
+    () => users.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [users, safePage],
   );
   const stats = useMemo(
-    () =>
-      users.reduce(
-        (result, user) => {
-          if (user.status === "فعال") result.activeCount += 1;
-          if (user.role === "مدیر فروشگاه") result.managerCount += 1;
-          if (user.role === "پشتیبانی") result.supportCount += 1;
-          return result;
-        },
-        { activeCount: 0, managerCount: 0, supportCount: 0 },
-      ),
+    () => users.reduce(
+      (result, user) => {
+        if (user.status === "فعال") result.activeCount += 1;
+        if (user.role === "مدیر فروشگاه") result.managerCount += 1;
+        if (user.role === "پشتیبانی") result.supportCount += 1;
+        return result;
+      },
+      { activeCount: 0, managerCount: 0, supportCount: 0 },
+    ),
     [users],
   );
 
@@ -48,7 +60,7 @@ export function useUsersPage() {
   return {
     users,
     paginated,
-    filteredCount: filtered.length,
+    filteredCount: users.length,
     query,
     setQuery,
     currentPage,

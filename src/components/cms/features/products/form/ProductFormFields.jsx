@@ -1,15 +1,25 @@
 import ProductField from "./ProductField";
 import ProductImagePicker from "../ProductImagePicker";
-import { CATEGORIES } from "../../../../../lib/data/products";
+import { useCategories } from "../../../../../lib/hooks/useCategories";
 
 export default function ProductFormFields({ form, errors, imageError, onChange, onImageChange, onImageError }) {
+  const { categories } = useCategories();
   return <div className="space-y-4">
     <ProductImagePicker value={form.image} onChange={onImageChange} error={imageError} onError={onImageError} />
     <ProductField id="product-name" label="نام محصول" required value={form.name} onChange={onChange("name")} placeholder="مثلاً کفش اسپرت مدل آریا" />
     <div className="grid grid-cols-2 gap-4">
-      <ProductField id="product-category" label="دسته‌بندی" value={form.cat} onChange={onChange("cat")}>
-        <select id="product-category" value={form.cat} onChange={onChange("cat")} className="cursor-pointer w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none focus:border-[#6C63FF] transition bg-white">
-          {CATEGORIES.map((category) => <option key={category.id} value={category.name}>{category.name}</option>)}
+      <ProductField id="product-category" label="دسته‌بندی" value={form.categoryId || ""} onChange={(e) => {
+        const category = categories.find((item) => String(item.id) === String(e.target.value));
+        onChange("categoryId")({ target: { value: category ? String(category.id) : "" } });
+        onChange("cat")({ target: { value: category?.name ?? "" } });
+      }}>
+        <select id="product-category" value={form.categoryId || ""} onChange={(e) => {
+          const category = categories.find((item) => String(item.id) === String(e.target.value));
+          onChange("categoryId")({ target: { value: category ? String(category.id) : "" } });
+          onChange("cat")({ target: { value: category?.name ?? "" } });
+        }} className="cursor-pointer w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none focus:border-[#6C63FF] transition bg-white">
+          {form.categoryId === "" && <option value="">بدون دسته‌بندی</option>}
+          {categories.map((category) => <option key={category.id} value={String(category.id)}>{category.name}</option>)}
         </select>
       </ProductField>
       <ProductField id="product-sku" label="کد محصول (SKU)" required value={form.sku} onChange={onChange("sku")} placeholder="SH-1042" />

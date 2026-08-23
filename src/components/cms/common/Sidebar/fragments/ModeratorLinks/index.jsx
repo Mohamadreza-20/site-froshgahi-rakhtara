@@ -1,5 +1,5 @@
 import NavItem from "../NavItem";
-import { House, Package, MessageSquare, Users } from "lucide-react";
+import { House, Package, Tags, MessageSquare, Users } from "lucide-react";
 function ModeratorLinks({ onNavigate }) {
 	return (
 		<>
@@ -17,6 +17,14 @@ function ModeratorLinks({ onNavigate }) {
 				bgColor="bg-yellow-500"
 				href="/dashboard/products"
 				label="محصولات"
+				onClick={onNavigate}
+			/>
+			<NavItem
+				icon={<Tags size={17} aria-hidden="true" />}
+				iconColor="text-emerald-500"
+				bgColor="bg-emerald-500"
+				href="/dashboard/categories"
+				label="دسته‌بندی‌ها"
 				onClick={onNavigate}
 			/>
 			<NavItem

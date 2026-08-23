@@ -16,6 +16,10 @@ export default function UserFormFields({ form, onChange }) {
         <label htmlFor="user-phone" className="block text-sm font-medium text-[#374151] mb-1.5">شماره موبایل</label>
         <input id="user-phone" required type="tel" dir="ltr" value={form.phone} onChange={onChange("phone")} placeholder="0912xxxxxxx" className="w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none focus:border-[#6C63FF] transition bg-white text-right" />
       </div>
+      <div>
+        <label htmlFor="user-joined" className="block text-sm font-medium text-[#374151] mb-1.5">تاریخ عضویت</label>
+        <input id="user-joined" value={form.joined} readOnly placeholder="۱۴۰۵/۰۵/۲۴" className="w-full px-3.5 py-2.5 rounded-xl border border-[#EEF0F5] text-sm outline-none bg-[#F9FAFB] text-[#6B7280]" />
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="user-role" className="block text-sm font-medium text-[#374151] mb-1.5">نقش</label>

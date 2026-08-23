@@ -11,9 +11,20 @@ const FOCUSABLE_SELECTOR = [
 	'[tabindex]:not([tabindex="-1"])',
 ].join(",");
 
+const INITIAL_FOCUS_SELECTOR = [
+	'input:not([disabled])',
+	'select:not([disabled])',
+	'textarea:not([disabled])',
+	'[data-dialog-initial-focus]',
+	'button:not([disabled]):not([data-dialog-close])',
+	'a[href]',
+].join(",");
+
 export default function Modal({ open, onClose, title, description, children, footer }) {
 	const dialogRef = useRef(null);
 	const previousActiveElement = useRef(null);
+	const onCloseRef = useRef(onClose);
+	onCloseRef.current = onClose;
 	const titleId = useId();
 	const descriptionId = useId();
 
@@ -23,13 +34,13 @@ export default function Modal({ open, onClose, title, description, children, foo
 		document.body.style.overflow = "hidden";
 
 		const dialog = dialogRef.current;
-		const focusable = dialog?.querySelectorAll(FOCUSABLE_SELECTOR);
-		(focusable?.[0] || dialog)?.focus();
+		const initialTarget = dialog?.querySelector(INITIAL_FOCUS_SELECTOR);
+		(initialTarget || dialog)?.focus();
 
 		const handleKeyDown = (event) => {
 			if (event.key === "Escape") {
 				event.preventDefault();
-				onClose?.();
+				onCloseRef.current?.();
 				return;
 			}
 			if (event.key !== "Tab" || !dialog) return;
@@ -56,7 +67,7 @@ export default function Modal({ open, onClose, title, description, children, foo
 			document.body.style.overflow = "";
 			previousActiveElement.current?.focus?.();
 		};
-	}, [open, onClose]);
+	}, [open]);
 
 	if (!open) return null;
 
@@ -79,6 +90,7 @@ export default function Modal({ open, onClose, title, description, children, foo
 						onClick={onClose}
 						className="cursor-pointer text-[#9CA3AF] hover:text-[#111827] hover:bg-[#F5F6FA] p-1.5 rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"
 						aria-label="بستن پنجره"
+						data-dialog-close="true"
 					>
 						<X size={18} aria-hidden="true" />
 					</button>

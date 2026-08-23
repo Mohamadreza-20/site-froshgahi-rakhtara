@@ -1,6 +1,8 @@
 export const queryKeys = {
+  categories: { all: ["categories"] },
   products: {
     all: ["products"],
+    catalog: ["products", "catalog"],
     list: (params = {}) => ["products", "list", params],
     detail: (id) => ["products", "detail", String(id)],
   },

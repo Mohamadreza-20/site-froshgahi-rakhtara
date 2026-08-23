@@ -4,8 +4,13 @@ import { queryKeys } from "../../queryKeys";
 
 export const usersQueryKey = queryKeys.users.all;
 
-export function useUsersQuery(options = {}) {
-  return useQuery({ queryKey: usersQueryKey, queryFn: getUsers, ...options });
+export function useUsersQuery(params = {}, options = {}) {
+  return useQuery({
+    queryKey: [...usersQueryKey, "catalog"],
+    queryFn: () => getUsers(),
+    placeholderData: (previous) => previous,
+    ...options,
+  });
 }
 
 export function useUsersMutations() {

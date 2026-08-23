@@ -1,7 +1,7 @@
 import { Check, Hash, Minus, Plus, Scissors, ShieldCheck, Truck } from "lucide-react";
 import { toman } from "../../../lib/data/products";
 
-export default function ProductPurchasePanel({ product, qty, size, justAdded, outOfStock, hasSizes, onQtyChange, onSizeChange, onAddToCart }) {
+export default function ProductPurchasePanel({ product, qty, size, justAdded, outOfStock, stock, hasSizes, onQtyChange, onSizeChange, onAddToCart }) {
 	return (
 		<div>
 			<div className="flex items-center gap-2 mb-3">
@@ -27,7 +27,7 @@ export default function ProductPurchasePanel({ product, qty, size, justAdded, ou
 					<div className="flex items-center gap-3 bg-white border border-ink/15 rounded-full px-4 py-2">
 						<button type="button" onClick={() => onQtyChange(Math.max(1, qty - 1))} aria-label="کاهش تعداد" className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30 rounded-full"><Minus size={16} aria-hidden="true" /></button>
 						<span className="w-6 text-center font-bold" aria-live="polite">{qty.toLocaleString("fa-IR")}</span>
-						<button type="button" onClick={() => onQtyChange(qty + 1)} aria-label="افزایش تعداد" className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30 rounded-full"><Plus size={16} aria-hidden="true" /></button>
+						<button type="button" onClick={() => onQtyChange(Math.min(stock || 1, qty + 1))} disabled={outOfStock || qty >= stock} aria-label="افزایش تعداد" className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"><Plus size={16} aria-hidden="true" /></button>
 					</div>
 					<button type="button" onClick={onAddToCart} disabled={outOfStock} aria-disabled={outOfStock} className={`cursor-pointer flex-1 font-bold py-3 rounded-full transition-all duration-200 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/40 ${justAdded ? "bg-camel text-forest" : "bg-forest text-cream"}`}>
 						{outOfStock ? "ناموجود" : justAdded ? <><Check size={18} aria-hidden="true" />به سبد اضافه شد</> : "افزودن به سبد خرید"}

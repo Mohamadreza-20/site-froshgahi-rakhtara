@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 
+const INITIAL_FOCUS_SELECTOR = 'button[aria-label="بستن سبد خرید"], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
+
 const FOCUSABLE_SELECTOR = [
   'a[href]', 'button:not([disabled])', 'input:not([disabled])', 'select:not([disabled])',
   'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])',
@@ -7,19 +9,21 @@ const FOCUSABLE_SELECTOR = [
 
 export default function useDialogFocus(panelRef, onClose) {
   const previousActiveElement = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     previousActiveElement.current = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const panel = panelRef.current;
-    const focusables = panel?.querySelectorAll(FOCUSABLE_SELECTOR);
-    (focusables?.[0] || panel)?.focus();
+    const initialTarget = panel?.querySelector(INITIAL_FOCUS_SELECTOR);
+    (initialTarget || panel)?.focus();
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current?.();
         return;
       }
       if (event.key !== "Tab" || !panel) return;
@@ -40,5 +44,5 @@ export default function useDialogFocus(panelRef, onClose) {
       document.body.style.overflow = previousOverflow;
       previousActiveElement.current?.focus?.();
     };
-  }, [onClose, panelRef]);
+  }, [panelRef]);
 }

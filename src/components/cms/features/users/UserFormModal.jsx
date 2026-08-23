@@ -5,7 +5,7 @@ import UserFormFields from "./form/UserFormFields";
 
 const ROLES = ["مشتری", "مدیر فروشگاه", "پشتیبانی"];
 const STATUSES = ["فعال", "غیرفعال"];
-const EMPTY_FORM = { name: "", email: "", phone: "", role: ROLES[0], status: STATUSES[0] };
+const EMPTY_FORM = { name: "", email: "", phone: "", role: ROLES[0], status: STATUSES[0], joined: "" };
 
 function getFormFromUser(user) {
   return user
@@ -15,6 +15,7 @@ function getFormFromUser(user) {
         phone: user.phone ?? "",
         role: user.role ?? ROLES[0],
         status: user.status ?? STATUSES[0],
+        joined: user.joined ?? "",
       }
     : EMPTY_FORM;
 }

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { CATEGORIES } from "../../../../../lib/data/products";
+import { useCategories } from "../../../../../lib/hooks/useCategories";
 
-export const emptyProductForm = { name: "", cat: CATEGORIES[0].name, price: "", stock: "", sku: "", desc: "", sizes: "", image: "", longDesc: "" };
+export const emptyProductForm = { name: "", cat: "", categoryId: "", price: "", stock: "", sku: "", desc: "", sizes: "", image: "", longDesc: "" };
 
 function normalizeProduct(product) {
   if (!product) return emptyProductForm;
   return {
     name: product.name ?? "",
-    cat: product.cat ?? CATEGORIES[0].name,
+    cat: product.cat ?? "",
+    categoryId: product.categoryId != null ? String(product.categoryId) : "",
     price: product.price ?? "",
     stock: product.stock ?? "",
     sku: product.sku ?? "",
@@ -19,16 +20,22 @@ function normalizeProduct(product) {
 }
 
 export function useProductForm(open, product) {
+  const { categories } = useCategories();
   const [form, setForm] = useState(emptyProductForm);
   const [imageError, setImageError] = useState("");
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (!open) return;
-    setForm(normalizeProduct(product));
+    const nextForm = normalizeProduct(product);
+    if (!product && categories[0]) {
+      nextForm.cat = categories[0].name;
+      nextForm.categoryId = String(categories[0].id);
+    }
+    setForm(nextForm);
     setImageError("");
     setErrors({});
-  }, [open, product]);
+  }, [categories, open, product]);
 
   const onChange = (field) => (event) => setForm((previous) => ({ ...previous, [field]: event.target.value }));
   const buildPayload = () => ({

@@ -13,8 +13,9 @@ function ProductCard({ product, onAdd, rating }) {
 
 	useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
-	const handleAdd = () => {
-		onAdd(product);
+	const handleAdd = async () => {
+		const added = await onAdd(product);
+		if (!added) return;
 		setIsJustAdded(true);
 		clearTimeout(timeoutRef.current);
 		timeoutRef.current = setTimeout(() => setIsJustAdded(false), 1200);
@@ -69,13 +70,15 @@ function ProductCard({ product, onAdd, rating }) {
 					) : (
 						<button
 							onClick={handleAdd}
+							disabled={Number(product.stock) <= 0}
+							aria-disabled={Number(product.stock) <= 0}
 							className={`cursor-pointer text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 min-w-[84px] active:scale-95 flex items-center justify-center gap-1 ${
 								isJustAdded
 									? "bg-camel text-forest"
-									: "bg-forest hover:bg-forest-light text-cream"
+									: "bg-forest hover:bg-forest-light text-cream disabled:bg-ink/20 disabled:text-ink/40 disabled:cursor-not-allowed"
 							}`}
 						>
-							{isJustAdded ? (
+							{Number(product.stock) <= 0 ? "ناموجود" : isJustAdded ? (
 								<>
 									<Check size={14} className="shrink-0" />
 									افزوده شد

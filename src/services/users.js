@@ -2,8 +2,8 @@ import api from "./api";
 
 const RESOURCE = "/users";
 
-export const getUsers = async () => {
-	const { data } = await api.get(RESOURCE);
+export const getUsers = async (params = {}) => {
+	const { data } = await api.get(RESOURCE, { params });
 	return data;
 };
 

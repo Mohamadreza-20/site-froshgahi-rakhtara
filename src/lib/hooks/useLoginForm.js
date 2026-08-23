@@ -28,7 +28,7 @@ export function useLoginForm(onSuccess) {
       const result = await login({ identifier: identifier.trim(), password, remember });
       if (result.success) {
         signIn(result.data, remember);
-        toast.success("ورود با موفقیت انجام شد", { description: "خوش آمدید به رخت‌آرا" });
+        toast.success("با موفقیت وارد حساب کاربری شدید");
         onSuccess?.(result.data);
       } else {
         toast.error(result.error || "ورود ناموفق بود، دوباره تلاش کنید");

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import AuthLayout from "../components/auth/AuthLayout";
 import LoginForm from "../components/auth/LoginForm";
 import RegisterForm from "../components/auth/RegisterForm";
 import { useAuthContext } from "../context/AuthContext";
-import { canAccessPanel } from "../lib/roles";
 import { usePageMeta } from "../lib/hooks/usePageMeta";
 
 export default function AuthPage() {
@@ -17,17 +15,14 @@ export default function AuthPage() {
 	);
 	const navigate = useNavigate();
 	const routeByRole = () => {
-		navigate(location.state?.from || "/");
+		navigate("/", { replace: true });
 	};
 
 	useEffect(() => {
-		if (!isAuthenticated) return;
-
-		toast("شما قبلاً وارد حساب کاربری خود شده‌اید");
-		navigate(canAccessPanel(user) ? "/dashboard/home" : "/account", {
-			replace: true,
-		});
-	}, [isAuthenticated, navigate, user]);
+		if (isAuthenticated && location.pathname === "/auth") {
+			navigate("/", { replace: true });
+		}
+	}, [isAuthenticated, location.pathname, navigate]);
 
 	return (
 		<AuthLayout tab={tab} setTab={setTab}>

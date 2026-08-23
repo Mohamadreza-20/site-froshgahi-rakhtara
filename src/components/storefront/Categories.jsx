@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
 import { ArrowLeft, Shirt, Sparkles, ShoppingBag, Watch } from "lucide-react";
-import { CATEGORIES } from "../../lib/data/products";
+import { useCategories } from "../../lib/hooks/useCategories";
 import { useProducts } from "../../lib/hooks/useProducts";
 
 const CATEGORY_STYLE = {
@@ -23,10 +24,30 @@ const CATEGORY_STYLE = {
 };
 
 export default function Categories() {
-	const { products } = useProducts();
+	const { products } = useProducts({ limit: 10000 });
+	const { categories } = useCategories();
 
-	const countFor = (categoryName) =>
-		products.filter((product) => product.cat === categoryName).length;
+	const countsByCategory = useMemo(() => {
+		const counts = new Map();
+		for (const category of categories) counts.set(String(category.id), 0);
+		for (const product of products) {
+			const categoryId = product?.categoryId != null && product.categoryId !== ""
+				? String(product.categoryId)
+				: "";
+			if (categoryId && counts.has(categoryId)) {
+				counts.set(categoryId, counts.get(categoryId) + 1);
+				continue;
+			}
+			const legacyName = String(product?.cat ?? "").trim();
+			if (!legacyName) continue;
+			const legacyCategory = categories.find((category) => String(category?.name ?? "").trim() === legacyName);
+			if (legacyCategory) {
+				const key = String(legacyCategory.id);
+				counts.set(key, (counts.get(key) || 0) + 1);
+			}
+		}
+		return counts;
+	}, [categories, products]);
 
 	return (
 		<section id="categories" className="max-w-7xl mx-auto px-6 py-20">
@@ -41,10 +62,10 @@ export default function Categories() {
 			</div>
 
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-				{CATEGORIES.map((category) => {
-					const style = CATEGORY_STYLE[category.id] || CATEGORY_STYLE.accessory;
+				{categories.map((category) => {
+					const style = CATEGORY_STYLE[category.id] || { icon: ShoppingBag, gradient: "from-forest to-forest-light" };
 					const Icon = style.icon;
-					const count = countFor(category.name);
+					const count = countsByCategory.get(String(category.id)) || 0;
 
 					return (
 						<Link
