@@ -2,14 +2,19 @@ import api from "./api";
 
 const RESOURCE = "/users";
 
-export const getUsers = async (params = {}) => {
-	const { data } = await api.get(RESOURCE, { params });
+export const getUsers = async () => {
+	const { data } = await api.get(RESOURCE);
 	return data;
 };
 
 export const createUser = async (userData) => {
-	const { data } = await api.post(RESOURCE, userData);
-	return data;
+	try {
+		const { data } = await api.post(RESOURCE, userData);
+		return data;
+	} catch (error) {
+		console.error("خطا در ارسال داده:", error.response?.data || error.message);
+		throw error;
+	}
 };
 
 export const updateUser = async (id, user) => {

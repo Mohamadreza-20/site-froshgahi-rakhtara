@@ -1,4 +1,3 @@
-import OptimizedImage from "../../../shared/OptimizedImage";
 import { Pencil, Trash2 } from "lucide-react";
 import { RoleBadge, StatusPill } from "../../ui";
 import ActionsMenu from "../products/ActionsMenu";
@@ -13,7 +12,7 @@ export default function UserRow({ user, onEdit, onDelete, isNew }) {
 		>
 			<td className="px-5 py-3.5">
 				<div className="flex items-center gap-3">
-					<OptimizedImage
+					<img
 						src={getAvatarUrl(user.seed || user.name)}
 						alt=""
 						className="w-9 h-9 rounded-full bg-[#EEF0FF] ring-2 ring-[#F5F6FA]"

@@ -1,16 +1,33 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../../lib/hooks/useProducts";
-import { useCommentsQuery } from "../../lib/hooks/cms/useCommentsQueries";
+import { getAllComments } from "../../services/comments";
 import ProductCard from "./ProductCard";
 import { ProductGridSkeleton } from "./ProductCardSkeleton";
-import { EmptyState, QueryErrorState } from "../shared/states/QueryStates";
 
 const FEATURED_COUNT = 9;
 
 export default function ProductsSection({ onAdd }) {
-	const { products: PRODUCTS, loading: productsLoading, error: productsError, refetch } = useProducts();
-	const { data: comments = [], isLoading: commentsLoading, isError: commentsError } = useCommentsQuery();
+	const { products: PRODUCTS, loading: productsLoading } = useProducts();
+	const [comments, setComments] = useState([]);
+	const [commentsLoading, setCommentsLoading] = useState(true);
+
+	useEffect(() => {
+		let ignore = false;
+		getAllComments()
+			.then((data) => {
+				if (!ignore) setComments(data);
+			})
+			.catch(() => {
+				if (!ignore) setComments([]);
+			})
+			.finally(() => {
+				if (!ignore) setCommentsLoading(false);
+			});
+		return () => {
+			ignore = true;
+		};
+	}, []);
 
 	const loading = productsLoading || commentsLoading;
 
@@ -52,12 +69,8 @@ export default function ProductsSection({ onAdd }) {
 					مشاهده همه ←
 				</Link>
 			</div>
-			{productsError || commentsError ? (
-				<QueryErrorState message="خطا در دریافت محصولات" onRetry={refetch} />
-			) : loading ? (
+			{loading ? (
 				<ProductGridSkeleton count={FEATURED_COUNT} />
-			) : featuredProducts.length === 0 ? (
-				<EmptyState title="محصول ویژه‌ای برای نمایش وجود ندارد" />
 			) : (
 				<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 					{featuredProducts.map((product) => (

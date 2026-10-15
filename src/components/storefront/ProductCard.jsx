@@ -1,4 +1,3 @@
-import OptimizedImage from "../shared/OptimizedImage";
 import { memo, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageOff, Check, Star } from "lucide-react";
@@ -13,9 +12,8 @@ function ProductCard({ product, onAdd, rating }) {
 
 	useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
-	const handleAdd = async () => {
-		const added = await onAdd(product);
-		if (!added) return;
+	const handleAdd = () => {
+		onAdd(product);
 		setIsJustAdded(true);
 		clearTimeout(timeoutRef.current);
 		timeoutRef.current = setTimeout(() => setIsJustAdded(false), 1200);
@@ -30,7 +28,7 @@ function ProductCard({ product, onAdd, rating }) {
 			<Link to={`/product/${product.id}`} className="block w-full text-right">
 				<div className="relative aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-cream-dark to-camel-light/40">
 					{product.image ? (
-						<OptimizedImage
+						<img
 							src={product.image}
 							alt={product.name}
 							loading="lazy"
@@ -70,15 +68,13 @@ function ProductCard({ product, onAdd, rating }) {
 					) : (
 						<button
 							onClick={handleAdd}
-							disabled={Number(product.stock) <= 0}
-							aria-disabled={Number(product.stock) <= 0}
 							className={`cursor-pointer text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 min-w-[84px] active:scale-95 flex items-center justify-center gap-1 ${
 								isJustAdded
 									? "bg-camel text-forest"
-									: "bg-forest hover:bg-forest-light text-cream disabled:bg-ink/20 disabled:text-ink/40 disabled:cursor-not-allowed"
+									: "bg-forest hover:bg-forest-light text-cream"
 							}`}
 						>
-							{Number(product.stock) <= 0 ? "ناموجود" : isJustAdded ? (
+							{isJustAdded ? (
 								<>
 									<Check size={14} className="shrink-0" />
 									افزوده شد

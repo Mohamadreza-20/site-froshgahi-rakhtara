@@ -1,24 +1,15 @@
-import React, { useState } from "react";
-import { toast } from "sonner";
+import React from "react";
 import { X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ModeratorLinks from "./fragments/ModeratorLinks";
 import { useAuthContext } from "../../../../context/AuthContext";
-import ConfirmDialog from "../../ui/ConfirmDialog";
 
 function Sidebar({ isOpen = false, onClose = () => {} }) {
 	const { signOut } = useAuthContext();
 	const navigate = useNavigate();
-	const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
-	const handleLogoutClick = () => {
-		setLogoutConfirmOpen(true);
-	};
-
-	const handleConfirmLogout = () => {
+	const handleLogout = () => {
 		signOut();
-		toast.success("با موفقیت از حساب کاربری خارج شدید");
-		setLogoutConfirmOpen(false);
 		onClose();
 		navigate("/");
 	};
@@ -71,7 +62,7 @@ function Sidebar({ isOpen = false, onClose = () => {} }) {
 				<div className="mt-auto pt-6 border-t border-[#EEF0F5] shrink-0">
 					<button
 						type="button"
-						onClick={handleLogoutClick}
+						onClick={handleLogout}
 						className="cursor-pointer w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold text-[#DC2626] hover:bg-[#FEF2F2] transition"
 					>
 						<LogOut size={18} />
@@ -79,16 +70,6 @@ function Sidebar({ isOpen = false, onClose = () => {} }) {
 					</button>
 				</div>
 			</aside>
-
-			<ConfirmDialog
-				open={logoutConfirmOpen}
-				onClose={() => setLogoutConfirmOpen(false)}
-				onConfirm={handleConfirmLogout}
-				title="خروج از حساب کاربری"
-				description="آیا مطمئن هستید که می‌خواهید از حساب کاربری خود خارج شوید؟"
-				confirmLabel="خروج"
-				cancelLabel="انصراف"
-			/>
 		</>
 	);
 }

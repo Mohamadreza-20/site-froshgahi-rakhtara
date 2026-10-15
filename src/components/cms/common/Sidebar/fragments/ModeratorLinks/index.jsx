@@ -1,10 +1,12 @@
 import NavItem from "../NavItem";
-import { House, Package, Tags, MessageSquare, Users } from "lucide-react";
+import { BiHome } from "react-icons/bi";
+import { BsBox2, BsChatSquareText } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa6";
 function ModeratorLinks({ onNavigate }) {
 	return (
 		<>
 			<NavItem
-				icon={<House size={17} aria-hidden="true" />}
+				icon={<BiHome />}
 				iconColor="text-zinc-500"
 				bgColor="bg-zinc-500"
 				href="/dashboard/home"
@@ -12,7 +14,7 @@ function ModeratorLinks({ onNavigate }) {
 				onClick={onNavigate}
 			/>
 			<NavItem
-				icon={<Package size={17} aria-hidden="true" />}
+				icon={<BsBox2 />}
 				iconColor="text-yellow-500"
 				bgColor="bg-yellow-500"
 				href="/dashboard/products"
@@ -20,15 +22,7 @@ function ModeratorLinks({ onNavigate }) {
 				onClick={onNavigate}
 			/>
 			<NavItem
-				icon={<Tags size={17} aria-hidden="true" />}
-				iconColor="text-emerald-500"
-				bgColor="bg-emerald-500"
-				href="/dashboard/categories"
-				label="دسته‌بندی‌ها"
-				onClick={onNavigate}
-			/>
-			<NavItem
-				icon={<Users size={17} aria-hidden="true" />}
+				icon={<FaUsers />}
 				iconColor="text-orange-500"
 				bgColor="bg-orange-500"
 				href="/dashboard/users"
@@ -36,7 +30,7 @@ function ModeratorLinks({ onNavigate }) {
 				onClick={onNavigate}
 			/>
 			<NavItem
-				icon={<MessageSquare size={17} aria-hidden="true" />}
+				icon={<BsChatSquareText />}
 				iconColor="text-purple-500"
 				bgColor="bg-purple-500"
 				href="/dashboard/comments"

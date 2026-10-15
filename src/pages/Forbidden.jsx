@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import { ShieldAlert } from "lucide-react";
-import { usePageMeta } from "../lib/hooks/usePageMeta";
 
 function Forbidden() {
-	usePageMeta({ title: "دسترسی غیرمجاز | Rakhtara", description: "دسترسی به این بخش از Rakhtara مجاز نیست.", robots: "noindex, nofollow" });
 	return (
 		<div
 			dir="rtl"
